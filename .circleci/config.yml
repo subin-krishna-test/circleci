@@ -22,7 +22,7 @@ jobs:
 workflows:
   build_and_test:
     jobs:
-        -build1
+        - build1
 #       - build1:
 #             filters:
 #               branches:
