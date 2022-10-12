@@ -32,12 +32,12 @@ workflows:
   build_and_test:
     jobs:
       - build1:
-          general:
+          filters:
             branches:
               only: main
       - test:
           requires:
             - build1
-          general:
+          filters:
             branches:
               only: main
