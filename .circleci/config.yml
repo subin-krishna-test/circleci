@@ -28,16 +28,18 @@ workflows:
   build_and_test:
     jobs:
       - build1:
-          branches:
-            only:
-              - main # list of branches to build
+          general:
+            branches:
+              only:
+                - main # list of branches to build
 #           filters:
 #             branches:
 #               only: main
       - test:
-          branches:
-            only:
-              - main # list of branches to build
+          general:
+            branches:
+              only:
+                - main # list of branches to build
 #           requires:
 #             - build1
 #           filters:
