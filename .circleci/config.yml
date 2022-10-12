@@ -8,7 +8,10 @@ jobs:
     steps:
       #- checkout
       #- run: python3 main.py
-      - ls:
+      - run:
+          name: Check Scripts
+          command: |
+            ls
   test:
     working_directory: ~/circleci-python
     docker:
@@ -16,7 +19,10 @@ jobs:
     steps:
       #- checkout
       #- run: python3 main-test.py
-      - ls:
+      - run:
+          name: Check Scripts
+          command: |
+            ls
 
 workflows:
   build_and_test:
