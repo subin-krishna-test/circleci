@@ -1,5 +1,9 @@
 version: 2.1
 
+on:
+  pull_request:
+    types: [opened]
+    
 jobs:
   build1:
     working_directory: ~/circleci-python
