@@ -12,28 +12,17 @@ jobs:
           name: Check Scripts
           command: |
             ls
-  test:
-    working_directory: ~/circleci-python
-    docker:
-      - image: "circleci/python:3.6.4"
-    steps:
-      #- checkout
-      #- run: python3 main-test.py
-      - run:
-          name: Check Scripts
-          command: |
-            ls
+            if [ -z "$CIRCLE_PULL_REQUEST" ]; then
+              if [ "$CIRCLE_BRANCH" != "main" ]; then
+                echo "Not a PR or master, halting"
+                circleci step halt
+              fi
+            fi
 
 workflows:
   build_and_test:
     jobs:
       - build1:
-            filters:
-              branches:
-                 only: main
-      - test:
-          requires:
-            - build1
-          filters:
-            branches:
-              only: main
+#             filters:
+#               branches:
+#                  only: main
