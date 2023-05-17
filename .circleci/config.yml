@@ -1,9 +1,4 @@
 version: 2.1
-
-on:
-  pull_request:
-    types: [opened]
-    
 jobs:
   build1:
     working_directory: ~/circleci-python
@@ -32,12 +27,6 @@ workflows:
   build_and_test:
     jobs:
       - build1:
-          filters:
-            branches:
-              only: main
       - test:
           requires:
             - build1
-          filters:
-            branches:
-              only: main
