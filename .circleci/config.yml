@@ -25,10 +25,15 @@ jobs:
 # Orchestrate our job run sequence
 workflows:
   build:
-    when:
-        matches: { pattern: "ebuild", value: << pipeline.parameters.job >> }
+    filters:
+      branches:
+        only:
+          - /^pull\/[\d]*$/
+#     when:
+#         matches: { pattern: "ebuild", value: << pipeline.parameters.job >> }
     jobs:
       - build
+  
   destroy:
     when:
         matches: { pattern: "edestroy", value: << pipeline.parameters.job >> }
