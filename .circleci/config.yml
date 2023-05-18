@@ -26,6 +26,7 @@ jobs:
               echo "PR JOB EXCECUTED"
             else
               echo "Normal job"
+              print $CIRCLE_PULL_REQUEST
             fi
 
 # Orchestrate our job run sequence
