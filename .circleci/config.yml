@@ -4,7 +4,12 @@ parameters:
     type: string
     default: "ebuild"
     
-     
+pull: &pull
+  filters:
+    branches:
+      only:
+        - /^pull\/[\d]*$/
+
 # Define the jobs we want to run for this project
 jobs:
   build:
@@ -23,12 +28,20 @@ jobs:
       - run: echo "required value << pipeline.parameters.job >>"
 
 # Orchestrate our job run sequence
+# workflows:
+#   build:
+#     when:
+#         matches: { pattern: "ebuild", value: << pipeline.parameters.job >> }
+#     jobs:
+#       - build
+
+
 workflows:
   build:
-    when:
-        matches: { pattern: "ebuild", value: << pipeline.parameters.job >> }
     jobs:
-      - build
+      - build:
+          <<: *pull
+  
   destroy:
     when:
         matches: { pattern: "edestroy", value: << pipeline.parameters.job >> }
