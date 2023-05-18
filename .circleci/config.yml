@@ -10,9 +10,13 @@ jobs:
   build:
     docker:
       - image: cimg/base:2023.03
+    environment:
+      MSG: << pipeline.trigger_parameters.circleci.event_type >>
     steps:
       - checkout
       - run: echo "this is the build job"
+      - run: echo $MSG
+      - run: echo "required value << pipeline.trigger_parameters.circleci.event_type >>"
       
   test:
     docker:
@@ -28,11 +32,15 @@ jobs:
               echo "Normal job"
               echo $CIRCLE_PULL_REQUEST
             fi
+      - run: echo "this is the build job"
+      - run: echo $MSG
+      - run: echo "required value << pipeline.trigger_parameters.circleci.event_type >>"
 
 # Orchestrate our job run sequence
 workflows:
-  pull_request:
-    when: << pipeline.parameters.pull_request >>
+  build-and-deploy:
+    when:
+        matches: { pattern: "pull request", value: << pipeline.trigger_parameters.circleci.event_type >> }
     jobs:
       - build
   push:
