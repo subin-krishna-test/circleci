@@ -19,5 +19,12 @@ jobs:
 workflows:
   build_and_test:
     jobs:
-      - build
+      - build:
+          filters:
+            branches:
+              only: main
+            tags:
+              only: /^pull\/.*$/      
+      
       - test
+
