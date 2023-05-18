@@ -2,7 +2,7 @@ version: 2.1
 parameters:
   job:
     type: string
-    default: ebuild
+    default: "ebuild"
     
      
 # Define the jobs we want to run for this project
@@ -20,17 +20,17 @@ jobs:
     steps:
       - checkout
       - run: echo "This is a DESTROY JOB"
-      - run: echo "required value << pipeline.parameter.job >>"
+      - run: echo "required value << pipeline.parameters.job >>"
 
 # Orchestrate our job run sequence
 workflows:
   build:
     when:
-        matches: { pattern: "ebuild", value: << pipeline.parameter.job >> }
+        matches: { pattern: "ebuild", value: << pipeline.parameters.job >> }
     jobs:
       - build
   destroy:
     when:
-        matches: { pattern: "edestroy", value: << pipeline.parameter.job >> }
+        matches: { pattern: "edestroy", value: << pipeline.parameters.job >> }
     jobs:
-      - build
+      - destroy
