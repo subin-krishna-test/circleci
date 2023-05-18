@@ -1,8 +1,8 @@
 version: 2.1
 parameters:
-  pull_request:
-    type: boolean
-    default: false
+  job:
+    type: string
+    default: ebuild
     
      
 # Define the jobs we want to run for this project
@@ -10,40 +10,27 @@ jobs:
   build:
     docker:
       - image: cimg/base:2023.03
-    environment:
-      MSG: << pipeline.trigger_parameters.circleci.event_type >>
     steps:
       - checkout
       - run: echo "this is the build job"
-      - run: echo $MSG
-      - run: echo "required value << pipeline.trigger_parameters.circleci.event_type >>"
       
-  test:
+  destroy:
     docker:
       - image: cimg/base:2023.03
     steps:
       - checkout
-      - run:
-          name: select job
-          command: |
-            if [[ -n "$CIRCLE_PULL_REQUEST" ]]; then
-              echo "PR JOB EXCECUTED"
-            else
-              echo "Normal job"
-              echo $CIRCLE_PULL_REQUEST
-            fi
-      - run: echo "this is the build job"
-      - run: echo $MSG
-      - run: echo "required value << pipeline.trigger_parameters.circleci.event_type >>"
+      - run: echo "This is a DESTROY JOB"
+      - run: echo "required value << pipeline.parameter.job >>"
 
 # Orchestrate our job run sequence
 workflows:
-  build-and-deploy:
+  build:
     when:
-        matches: { pattern: "pull request", value: << pipeline.trigger_parameters.circleci.event_type >> }
+        matches: { pattern: "ebuild", value: << pipeline.parameter.job >> }
     jobs:
       - build
-  push:
-    unless: << pipeline.parameters.pull_request >>
+  destroy:
+    when:
+        matches: { pattern: "edestroy", value: << pipeline.parameter.job >> }
     jobs:
-      - test
+      - build
